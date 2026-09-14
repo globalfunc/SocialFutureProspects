@@ -3,6 +3,8 @@ import { useTranslation } from "react-i18next";
 import type { ProspectView } from "../../hooks/useProspects.js";
 import { generateEmail } from "../../email/generateEmail.js";
 import { useAnnounce } from "../../context/AnnounceContext.js";
+import { EmailField } from "../../components/EmailField.js";
+import { useUnlock } from "../../context/UnlockContext.js";
 
 type EmailLang = "en" | "bg";
 
@@ -15,9 +17,15 @@ async function copyText(text: string): Promise<boolean> {
   }
 }
 
-export function EmailPanel({ prospect: p }: { prospect: ProspectView }) {
+interface EmailPanelProps {
+  prospect: ProspectView;
+  onEmailChange: (value: string | null) => void;
+}
+
+export function EmailPanel({ prospect: p, onEmailChange }: EmailPanelProps) {
   const { t } = useTranslation();
   const announce = useAnnounce();
+  const { unlocked } = useUnlock();
   const isDnc = p.matchRating <= 1;
   // Independent of the global UI-chrome language toggle (design.md §2):
   // someone reviewing in English chrome may still need the Bulgarian
@@ -52,6 +60,16 @@ export function EmailPanel({ prospect: p }: { prospect: ProspectView }) {
 
   return (
     <div>
+      <EmailField
+        id={p.id}
+        value={p.email}
+        locked={!unlocked}
+        pending={p.pendingField === "email"}
+        onSave={onEmailChange}
+        label={t("detail.contact.emailLabel")}
+        className="mb-4.5 max-w-[320px]"
+      />
+
       <div role="group" aria-label={t("detail.email.languageGroupLabel")} className="mb-4.5 flex gap-2">
         <button
           type="button"

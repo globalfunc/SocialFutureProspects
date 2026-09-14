@@ -24,6 +24,11 @@ export interface Prospect {
   localTimeInSlot: string;
   verificationStatus: string;
   contact: string;
+  // Auto-extracted from the raw `contact` text at import time, e.g. "nidhi@risingflame.org
+  // (published on their org site)" -> "nidhi@risingflame.org". Null when no address-looking
+  // text is present. This is the seed's own read-only finding — the live, user-editable
+  // email (which can start from this value or override it) lives in ProspectState, never here.
+  scrapedEmail: string | null;
   profileUrl: string;
   priorPublicSpeaking: string;
   // Renamed from the source JSON's `outreachStatus` field. This is the seed's own
@@ -62,6 +67,10 @@ export interface ProspectStateRow {
   favourite: boolean;
   outreach_status: OutreachStatus;
   outreach_status_set_at: string | null; // ISO timestamp
+  // User-editable, single source of truth for "the email to use" once set — starts as
+  // the seed's scrapedEmail (see Prospect) but either person can correct or fill it in,
+  // and re-import can never touch it. Null means "use scrapedEmail, if any".
+  email: string | null;
   updated_at: string; // ISO timestamp
 }
 
@@ -70,6 +79,7 @@ export const DEFAULT_PROSPECT_STATE: Omit<ProspectStateRow, "id" | "updated_at">
   favourite: false,
   outreach_status: "Not sent",
   outreach_status_set_at: null,
+  email: null,
 };
 
 // Threshold for BG-translated prospect content, per CLAUDE.md's bilingual-content

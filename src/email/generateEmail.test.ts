@@ -16,6 +16,7 @@ function makeProspect(overrides: Partial<Prospect> = {}): Prospect {
     localTimeInSlot: "12:00-15:00 BST",
     verificationStatus: "Verified",
     contact: "contact",
+    scrapedEmail: null,
     profileUrl: "url",
     priorPublicSpeaking: "Y",
     outreachStatusSourceNote: "Not sent",

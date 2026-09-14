@@ -67,6 +67,17 @@ describe("normalizeProspect: other fields", () => {
     expect(normalizeProspect(makeRow({}))).toHaveProperty("photoPath", null);
   });
 
+  it("extracts an email address embedded in the contact field", () => {
+    const result = normalizeProspect(
+      makeRow({ contact: "srikanth@bollant.com (published by him on Instagram)" }),
+    );
+    expect(result.scrapedEmail).toBe("srikanth@bollant.com");
+  });
+
+  it("sets scrapedEmail to null when no address is present", () => {
+    expect(normalizeProspect(makeRow({ contact: "Speaker bureau contact form" })).scrapedEmail).toBeNull();
+  });
+
   it("always sets bgTranslation to null at import time regardless of matchRating", () => {
     expect(normalizeProspect(makeRow({ matchRating: 5 })).bgTranslation).toBeNull();
     expect(normalizeProspect(makeRow({ matchRating: 1 })).bgTranslation).toBeNull();
@@ -115,6 +126,11 @@ describe("against the real seed file", () => {
   it("keeps the one fractional tzDiffHours value (2.5) as-is", () => {
     const prospects = normalizeAllProspects(rawSeed);
     expect(prospects.some((p) => p.tzDiffHours === 2.5)).toBe(true);
+  });
+
+  it("finds exactly 3 rows with a scrapable email address in the current seed", () => {
+    const prospects = normalizeAllProspects(rawSeed);
+    expect(prospects.filter((p) => p.scrapedEmail !== null).length).toBe(3);
   });
 
   it("includes both split rows for the former joint Masselin/Simon entry", () => {

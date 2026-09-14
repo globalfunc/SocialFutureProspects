@@ -57,6 +57,16 @@ function assertStatus(raw: string, id: string): "existing" | "new" {
   return raw;
 }
 
+const EMAIL_PATTERN = /[\w.+-]+@[\w-]+\.[\w.-]+/;
+
+// Best-effort pull of an email address out of the free-text `contact` field, e.g.
+// "srikanth@bollant.com (published by him on Instagram)". Never guesses or completes
+// a partial address (CLAUDE.md's "never invent a missing contact detail") — only
+// returns text that already looks like a full address, verbatim.
+function extractScrapedEmail(contact: string): string | null {
+  return EMAIL_PATTERN.exec(contact)?.[0] ?? null;
+}
+
 // Converts one raw seed-JSON row into the normalized Prospect shape (design.md §4).
 // Pure function, no I/O — the caller (seedImport) is responsible for persistence.
 export function normalizeProspect(raw: RawProspectRow): Prospect {
@@ -73,6 +83,7 @@ export function normalizeProspect(raw: RawProspectRow): Prospect {
     localTimeInSlot: raw.localTimeInSlot,
     verificationStatus: raw.verificationStatus,
     contact: raw.contact,
+    scrapedEmail: extractScrapedEmail(raw.contact),
     profileUrl: raw.profileUrl,
     priorPublicSpeaking: raw.priorPublicSpeaking,
     outreachStatusSourceNote: raw.outreachStatus,

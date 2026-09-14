@@ -4,25 +4,17 @@ import type { Prospect, OutreachStatus } from "../lib/types.js";
 import { useStorage } from "../context/StorageContext.js";
 import { useAnnounce } from "../context/AnnounceContext.js";
 import { useErrorBanner } from "../context/ErrorBannerContext.js";
-import { PHOTO_MANIFEST } from "../data/photoManifest.js";
 
-// prospects_seed's own photoPath is always null (Phase 4 contract, tested —
-// the importer never guesses a photo). Resolving PHOTO_MANIFEST into an
-// actual path is an app-layer overlay, applied here rather than touching the
-// seed rows, so seed re-import can never clobber it and normalizeProspect's
-// "always null" invariant stays true to what's actually in storage.
-function resolvePhotoPath(id: string, seedPhotoPath: string | null): string | null {
-  const filename = PHOTO_MANIFEST[id];
-  return filename ? `prospects/${id}/${filename}` : seedPhotoPath;
-}
-
-export type PendingField = "verified" | "favourite" | "outreachStatus" | null;
+export type PendingField = "verified" | "favourite" | "outreachStatus" | "email" | null;
 
 export interface ProspectView extends Prospect {
   verified: boolean;
   favourite: boolean;
   outreachStatus: OutreachStatus;
   outreachStatusSetAt: string | null;
+  // The one email value the rest of the app should read (ContactPanel, EmailPanel):
+  // the live, user-editable override if set, else the seed's own scrapedEmail finding.
+  email: string | null;
   pendingField: PendingField;
 }
 
@@ -33,6 +25,7 @@ interface UseProspectsResult {
   setVerified: (id: string, value: boolean) => Promise<void>;
   setFavourite: (id: string, value: boolean) => Promise<void>;
   setOutreachStatus: (id: string, value: OutreachStatus) => Promise<void>;
+  setEmail: (id: string, value: string | null) => Promise<void>;
 }
 
 // Loads prospects_seed + prospect_state and merges them into one UI-facing
@@ -62,11 +55,11 @@ export function useProspects(): UseProspectsResult {
         const state = stateById.get(seed.id);
         return {
           ...seed,
-          photoPath: resolvePhotoPath(seed.id, seed.photoPath),
           verified: state?.verified ?? false,
           favourite: state?.favourite ?? false,
           outreachStatus: state?.outreach_status ?? "Not sent",
           outreachStatusSetAt: state?.outreach_status_set_at ?? null,
+          email: state?.email ?? seed.scrapedEmail,
           pendingField: null,
         };
       });
@@ -158,5 +151,35 @@ export function useProspects(): UseProspectsResult {
     [client, prospects, announce, showError, t],
   );
 
-  return { prospects, loading: seeding || loading, getById, setVerified, setFavourite, setOutreachStatus };
+  const setEmail = useCallback(
+    async (id: string, value: string | null) => {
+      const prospect = prospects.find((p) => p.id === id);
+      if (!prospect) return;
+      setPending(id, "email");
+      try {
+        await client.prospectState.update(id, { email: value, updated_at: new Date().toISOString() });
+        setProspects((prev) =>
+          prev.map((p) =>
+            p.id === id ? { ...p, email: value ?? p.scrapedEmail, pendingField: null } : p,
+          ),
+        );
+        announce(t("announce.emailSaved", { name: prospect.name }));
+      } catch {
+        setPending(id, null);
+        announce(t("announce.writeFailed", { field: "Email" }));
+        showError(t("announce.writeFailed", { field: "Email" }));
+      }
+    },
+    [client, prospects, announce, showError, t],
+  );
+
+  return {
+    prospects,
+    loading: seeding || loading,
+    getById,
+    setVerified,
+    setFavourite,
+    setOutreachStatus,
+    setEmail,
+  };
 }

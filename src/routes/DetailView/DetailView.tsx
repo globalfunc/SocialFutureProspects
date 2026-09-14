@@ -20,7 +20,7 @@ function formatTz(tzDiffHours: number): string {
 export function DetailView() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { getById, loading, setVerified, setFavourite, setOutreachStatus } = useProspects();
+  const { getById, loading, setVerified, setFavourite, setOutreachStatus, setEmail } = useProspects();
   const { unlocked } = useUnlock();
   const [activeTab, setActiveTab] = useState("overview");
   const nameHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -62,7 +62,7 @@ export function DetailView() {
 
       <div className="grid grid-cols-1 items-start gap-11 py-7 pb-14 md:grid-cols-[260px_1fr]">
         <aside aria-label={t("detail.quickFacts")} className="flex flex-col gap-4.5 md:sticky md:top-5">
-          <InitialsAvatar name={prospect.name} photoPath={prospect.photoPath} />
+          <InitialsAvatar key={prospect.id} id={prospect.id} name={prospect.name} />
           <div className="flex flex-col gap-2">
             <IconToggle
               pressed={prospect.verified}
@@ -117,10 +117,14 @@ export function DetailView() {
             <CareerPanel prospect={prospect} />
           </TabPanel>
           <TabPanel tabKey="contact" active={activeTab === "contact"}>
-            <ContactPanel prospect={prospect} onOutreachChange={(v) => void setOutreachStatus(prospect.id, v)} />
+            <ContactPanel
+              prospect={prospect}
+              onOutreachChange={(v) => void setOutreachStatus(prospect.id, v)}
+              onEmailChange={(v) => void setEmail(prospect.id, v)}
+            />
           </TabPanel>
           <TabPanel tabKey="email" active={activeTab === "email"}>
-            <EmailPanel prospect={prospect} />
+            <EmailPanel prospect={prospect} onEmailChange={(v) => void setEmail(prospect.id, v)} />
           </TabPanel>
         </div>
       </div>

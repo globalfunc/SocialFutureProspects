@@ -1,17 +1,19 @@
 import { useTranslation } from "react-i18next";
 import type { ProspectView } from "../../hooks/useProspects.js";
 import { OutreachSelect } from "../../components/OutreachSelect.js";
+import { EmailField } from "../../components/EmailField.js";
 import { useUnlock } from "../../context/UnlockContext.js";
 import type { OutreachStatus } from "../../lib/types.js";
 
 interface ContactPanelProps {
   prospect: ProspectView;
   onOutreachChange: (value: OutreachStatus) => void;
+  onEmailChange: (value: string | null) => void;
 }
 
 const UNVERIFIED_MARKERS = ["(verify URL)", "(unverified)"];
 
-export function ContactPanel({ prospect: p, onOutreachChange }: ContactPanelProps) {
+export function ContactPanel({ prospect: p, onOutreachChange, onEmailChange }: ContactPanelProps) {
   const { t } = useTranslation();
   const { unlocked } = useUnlock();
   const isDnc = p.matchRating <= 1;
@@ -20,6 +22,17 @@ export function ContactPanel({ prospect: p, onOutreachChange }: ContactPanelProp
   return (
     <div>
       <dl className="flex flex-col">
+        <Row label={t("detail.contact.emailLabel")}>
+          <EmailField
+            id={p.id}
+            value={p.email}
+            locked={!unlocked}
+            pending={p.pendingField === "email"}
+            onSave={onEmailChange}
+            ariaLabel={t("detail.contact.emailLabel")}
+            className="max-w-[320px]"
+          />
+        </Row>
         <Row label={t("detail.contact.contactLabel")}>{p.contact}</Row>
         <Row label={t("detail.contact.profileUrlLabel")}>
           {p.profileUrl}
