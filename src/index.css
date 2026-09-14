@@ -1,0 +1,105 @@
+@import "tailwindcss";
+
+/*
+ * Palette/type tokens ported from the approved "Prospect Dossier" mockup.
+ * Light values live on :root; dark values apply either via
+ * prefers-color-scheme (when no explicit override is set) or via an explicit
+ * [data-theme="dark"|"light"] override on <html>. `@theme inline` re-exposes
+ * each variable as a Tailwind utility (bg-paper, text-ink-soft, ...) while
+ * keeping the variable swappable at runtime for theming.
+ */
+:root {
+  --paper: #edefe6;
+  --paper-raised: #f8f9f2;
+  --ink: #1d2a20;
+  --ink-soft: #57634f;
+  --line: #d6dac6;
+  --accent: #2b6f5c;
+  --accent-ink: #f8f9f2;
+  --gold: #8a631a;
+  --good: #2f7d4f;
+  --warn: #8c6b17;
+  --danger: #9e3b2c;
+  --focus: #1d2a20;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --paper: #12160e;
+    --paper-raised: #191f14;
+    --ink: #eceadb;
+    --ink-soft: #a7ae97;
+    --line: #2e3524;
+    --accent: #6fc0a4;
+    --accent-ink: #0f1710;
+    --gold: #d9ae55;
+    --good: #6ecb8e;
+    --warn: #d9ae55;
+    --danger: #e2785f;
+    --focus: #eceadb;
+  }
+}
+
+:root[data-theme="dark"] {
+  --paper: #12160e;
+  --paper-raised: #191f14;
+  --ink: #eceadb;
+  --ink-soft: #a7ae97;
+  --line: #2e3524;
+  --accent: #6fc0a4;
+  --accent-ink: #0f1710;
+  --gold: #d9ae55;
+  --good: #6ecb8e;
+  --warn: #d9ae55;
+  --danger: #e2785f;
+  --focus: #eceadb;
+}
+
+@theme inline {
+  --color-paper: var(--paper);
+  --color-paper-raised: var(--paper-raised);
+  --color-ink: var(--ink);
+  --color-ink-soft: var(--ink-soft);
+  --color-line: var(--line);
+  --color-accent: var(--accent);
+  --color-accent-ink: var(--accent-ink);
+  --color-gold: var(--gold);
+  --color-good: var(--good);
+  --color-warn: var(--warn);
+  --color-danger: var(--danger);
+  --color-focus: var(--focus);
+
+  --font-serif: "Fraunces", ui-serif, Georgia, serif;
+  --font-sans: "IBM Plex Sans", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, monospace;
+}
+
+html {
+  color-scheme: light dark;
+}
+
+body {
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sans);
+}
+
+.tabular-nums {
+  font-variant-numeric: tabular-nums;
+}
+
+/* :focus-visible only — never a bare outline:none with no replacement. */
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
