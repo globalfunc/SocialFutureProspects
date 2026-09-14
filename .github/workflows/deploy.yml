@@ -32,6 +32,13 @@ jobs:
         run: npm run build
         env:
           VITE_BASE: /SocialFutureProspects/
+          # Vite inlines these into the bundle at build time. Both are the public
+          # anon ("publishable") pair — the secret/service_role key must never be
+          # added here. If either secret is missing the build still succeeds and
+          # the deployed app silently falls back to the in-memory mock, so check
+          # Settings -> Secrets and variables -> Actions when data looks empty.
+          VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
