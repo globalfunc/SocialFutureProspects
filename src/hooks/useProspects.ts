@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from "react";
 import { useTranslation } from "react-i18next";
-import type { Prospect, OutreachStatus } from "../lib/types.js";
+import type { ContactSource, Prospect, OutreachStatus } from "../lib/types.js";
 import { useStorage } from "../context/StorageContext.js";
 import { useAnnounce } from "../context/AnnounceContext.js";
 import { useErrorBanner } from "../context/ErrorBannerContext.js";
 
-export type PendingField = "verified" | "favourite" | "outreachStatus" | "email" | null;
+export type PendingField = "verified" | "favourite" | "outreachStatus" | "email" | "contactSources" | null;
 
 export interface ProspectView extends Prospect {
   verified: boolean;
@@ -15,6 +15,8 @@ export interface ProspectView extends Prospect {
   // The one email value the rest of the app should read (ContactPanel, EmailPanel):
   // the live, user-editable override if set, else the seed's own scrapedEmail finding.
   email: string | null;
+  // User-curated non-email contact sources (personal/company site, LinkedIn, etc).
+  contactSources: ContactSource[];
   pendingField: PendingField;
 }
 
@@ -26,6 +28,7 @@ interface UseProspectsResult {
   setFavourite: (id: string, value: boolean) => Promise<void>;
   setOutreachStatus: (id: string, value: OutreachStatus) => Promise<void>;
   setEmail: (id: string, value: string | null) => Promise<void>;
+  setContactSources: (id: string, value: ContactSource[]) => Promise<void>;
 }
 
 // Loads prospects_seed + prospect_state and merges them into one UI-facing
@@ -60,6 +63,7 @@ export function useProspects(): UseProspectsResult {
           outreachStatus: state?.outreach_status ?? "Not sent",
           outreachStatusSetAt: state?.outreach_status_set_at ?? null,
           email: state?.email ?? seed.scrapedEmail,
+          contactSources: state?.contact_sources ?? [],
           pendingField: null,
         };
       });
@@ -173,6 +177,26 @@ export function useProspects(): UseProspectsResult {
     [client, prospects, announce, showError, t],
   );
 
+  const setContactSources = useCallback(
+    async (id: string, value: ContactSource[]) => {
+      const prospect = prospects.find((p) => p.id === id);
+      if (!prospect) return;
+      setPending(id, "contactSources");
+      try {
+        await client.prospectState.update(id, { contact_sources: value, updated_at: new Date().toISOString() });
+        setProspects((prev) =>
+          prev.map((p) => (p.id === id ? { ...p, contactSources: value, pendingField: null } : p)),
+        );
+        announce(t("announce.contactSourcesSaved", { name: prospect.name }));
+      } catch {
+        setPending(id, null);
+        announce(t("announce.writeFailed", { field: "Contact sources" }));
+        showError(t("announce.writeFailed", { field: "Contact sources" }));
+      }
+    },
+    [client, prospects, announce, showError, t],
+  );
+
   return {
     prospects,
     loading: seeding || loading,
@@ -181,5 +205,6 @@ export function useProspects(): UseProspectsResult {
     setFavourite,
     setOutreachStatus,
     setEmail,
+    setContactSources,
   };
 }

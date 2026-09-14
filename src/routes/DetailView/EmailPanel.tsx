@@ -4,7 +4,9 @@ import type { ProspectView } from "../../hooks/useProspects.js";
 import { generateEmail } from "../../email/generateEmail.js";
 import { useAnnounce } from "../../context/AnnounceContext.js";
 import { EmailField } from "../../components/EmailField.js";
+import { ContactSourcesEditor } from "../../components/ContactSourcesEditor.js";
 import { useUnlock } from "../../context/UnlockContext.js";
+import type { ContactSource } from "../../lib/types.js";
 
 type EmailLang = "en" | "bg";
 
@@ -20,9 +22,10 @@ async function copyText(text: string): Promise<boolean> {
 interface EmailPanelProps {
   prospect: ProspectView;
   onEmailChange: (value: string | null) => void;
+  onContactSourcesChange: (value: ContactSource[]) => void;
 }
 
-export function EmailPanel({ prospect: p, onEmailChange }: EmailPanelProps) {
+export function EmailPanel({ prospect: p, onEmailChange, onContactSourcesChange }: EmailPanelProps) {
   const { t } = useTranslation();
   const announce = useAnnounce();
   const { unlocked } = useUnlock();
@@ -69,6 +72,16 @@ export function EmailPanel({ prospect: p, onEmailChange }: EmailPanelProps) {
         label={t("detail.contact.emailLabel")}
         className="mb-4.5 max-w-[320px]"
       />
+
+      <div className="mb-4.5 max-w-[62ch]">
+        <h3 className="mb-1.5 text-xs font-semibold text-ink-soft">{t("detail.email.contactSourcesHeading")}</h3>
+        <ContactSourcesEditor
+          sources={p.contactSources}
+          locked={!unlocked}
+          pending={p.pendingField === "contactSources"}
+          onChange={onContactSourcesChange}
+        />
+      </div>
 
       <div role="group" aria-label={t("detail.email.languageGroupLabel")} className="mb-4.5 flex gap-2">
         <button

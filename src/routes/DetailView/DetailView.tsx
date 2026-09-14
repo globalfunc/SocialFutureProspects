@@ -20,7 +20,8 @@ function formatTz(tzDiffHours: number): string {
 export function DetailView() {
   const { id } = useParams<{ id: string }>();
   const { t } = useTranslation();
-  const { getById, loading, setVerified, setFavourite, setOutreachStatus, setEmail } = useProspects();
+  const { getById, loading, setVerified, setFavourite, setOutreachStatus, setEmail, setContactSources } =
+    useProspects();
   const { unlocked } = useUnlock();
   const [activeTab, setActiveTab] = useState("overview");
   const nameHeadingRef = useRef<HTMLHeadingElement>(null);
@@ -124,7 +125,11 @@ export function DetailView() {
             />
           </TabPanel>
           <TabPanel tabKey="email" active={activeTab === "email"}>
-            <EmailPanel prospect={prospect} onEmailChange={(v) => void setEmail(prospect.id, v)} />
+            <EmailPanel
+              prospect={prospect}
+              onEmailChange={(v) => void setEmail(prospect.id, v)}
+              onContactSourcesChange={(v) => void setContactSources(prospect.id, v)}
+            />
           </TabPanel>
         </div>
       </div>

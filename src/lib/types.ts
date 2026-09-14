@@ -52,6 +52,24 @@ export interface ProspectSeedRow extends Prospect {
   imported_at: string; // ISO timestamp
 }
 
+// A non-email way to reach a prospect, for the common case (CLAUDE.md: most rows
+// list a speaker bureau, contact form, or social profile rather than an actual
+// email address) where no address is publicly available. Purely user-curated —
+// never guessed or scraped, unlike scrapedEmail.
+export type ContactSourceType =
+  | "personal-website"
+  | "company-website"
+  | "linkedin"
+  | "instagram"
+  | "facebook"
+  | "other";
+
+export interface ContactSource {
+  id: string;
+  type: ContactSourceType;
+  url: string;
+}
+
 export type OutreachStatus =
   | "Not sent"
   | "Sent"
@@ -71,6 +89,9 @@ export interface ProspectStateRow {
   // the seed's scrapedEmail (see Prospect) but either person can correct or fill it in,
   // and re-import can never touch it. Null means "use scrapedEmail, if any".
   email: string | null;
+  // User-curated list of non-email ways to reach this prospect (personal/company
+  // site, LinkedIn, Instagram, Facebook, other). Empty until someone adds one.
+  contact_sources: ContactSource[];
   updated_at: string; // ISO timestamp
 }
 
@@ -80,6 +101,7 @@ export const DEFAULT_PROSPECT_STATE: Omit<ProspectStateRow, "id" | "updated_at">
   outreach_status: "Not sent",
   outreach_status_set_at: null,
   email: null,
+  contact_sources: [],
 };
 
 // Threshold for BG-translated prospect content, per CLAUDE.md's bilingual-content
