@@ -28,6 +28,26 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # Fail loudly instead of shipping a working-looking app backed by the
+      # in-memory mock. With the env vars empty, Vite folds the credential check
+      # in StorageContext to a dead branch and tree-shakes Supabase out entirely,
+      # so the build still succeeds and deploys — the app just silently forgets
+      # every edit on reload. That must never reach Christian unnoticed.
+      - name: Verify Supabase secrets are present
+        env:
+          URL: ${{ secrets.SUPABASE_URL }}
+          ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+        run: |
+          # Only lengths are printed — never the values themselves.
+          echo "SUPABASE_URL length: ${#URL}"
+          echo "SUPABASE_ANON_KEY length: ${#ANON_KEY}"
+          if [ -z "$URL" ] || [ -z "$ANON_KEY" ]; then
+            echo "::error::Missing repository secret SUPABASE_URL and/or SUPABASE_ANON_KEY."
+            echo "::error::Check Settings -> Secrets and variables -> Actions -> *Secrets* tab"
+            echo "::error::(not Variables, not Dependabot), as *Repository* secrets."
+            exit 1
+          fi
+
       - name: Build
         run: npm run build
         env:
@@ -39,6 +59,17 @@ jobs:
           # Settings -> Secrets and variables -> Actions when data looks empty.
           VITE_SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
           VITE_SUPABASE_ANON_KEY: ${{ secrets.SUPABASE_ANON_KEY }}
+
+      # End-to-end proof the credentials actually reached the bundle, not just
+      # the runner: a mock-backed build contains no Supabase code at all.
+      - name: Verify the built bundle is Supabase-backed
+        run: |
+          if grep -rqF "supabase" dist/assets/*.js; then
+            echo "OK: built bundle contains Supabase client code."
+          else
+            echo "::error::Built bundle has no Supabase code — it would deploy the in-memory mock."
+            exit 1
+          fi
 
       - name: Deploy to gh-pages branch
         uses: peaceiris/actions-gh-pages@v4
