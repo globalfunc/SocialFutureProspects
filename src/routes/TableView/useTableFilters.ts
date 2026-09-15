@@ -54,14 +54,48 @@ export interface TableGroups {
   totalInScope: number;
 }
 
+// Distinct, non-null countryNormalized values present in the data, sorted for a
+// stable dropdown order. Rows with no normalized country (unknown/ambiguous
+// source text) are reachable separately via the "unknown" filter option — never
+// silently dropped from the list of choices.
+export function distinctCountries(prospects: ProspectView[]): string[] {
+  return [...new Set(prospects.map((p) => p.countryNormalized).filter((c): c is string => c !== null))].sort(
+    (a, b) => a.localeCompare(b),
+  );
+}
+
+export function distinctTags(prospects: ProspectView[]): string[] {
+  return [...new Set(prospects.flatMap((p) => p.tags))].sort((a, b) => a.localeCompare(b));
+}
+
+// Sentinel for "country not determined" in the country filter's <select>, kept
+// out of the way of any real country name.
+export const UNKNOWN_COUNTRY_VALUE = "__unknown__";
+
 export function useTableFilters(prospects: ProspectView[]) {
   const [sort, setSort] = useState<SortState>({ field: "matchRating", direction: "desc" });
   const [search, setSearch] = useState("");
   const [tzOffset, setTzOffset] = useState<number | null>(null);
   const [showDnc, setShowDnc] = useState(true);
+  const [country, setCountry] = useState<string | null>(null);
+  const [tag, setTag] = useState<string | null>(null);
+  const [hasEmailOnly, setHasEmailOnly] = useState(false);
 
   const groups: TableGroups = useMemo(() => {
-    const searched = prospects.filter((p) => matchesSearch(p, search));
+    let searched = prospects.filter((p) => matchesSearch(p, search));
+
+    if (country !== null) {
+      searched =
+        country === UNKNOWN_COUNTRY_VALUE
+          ? searched.filter((p) => p.countryNormalized === null)
+          : searched.filter((p) => p.countryNormalized === country);
+    }
+    if (tag !== null) {
+      searched = searched.filter((p) => p.tags.includes(tag));
+    }
+    if (hasEmailOnly) {
+      searched = searched.filter((p) => Boolean(p.email));
+    }
 
     let dnc = searched.filter((p) => p.matchRating <= 1);
     const rest = searched.filter((p) => p.matchRating > 1);
@@ -88,7 +122,7 @@ export function useTableFilters(prospects: ProspectView[]) {
       totalShown: sortedMain.length + sortedTzUnknown.length + sortedDnc.length,
       totalInScope,
     };
-  }, [prospects, search, tzOffset, showDnc, sort]);
+  }, [prospects, search, tzOffset, showDnc, country, tag, hasEmailOnly, sort]);
 
   const cycleSort = (field: SortField) => {
     setSort((prev) =>
@@ -107,6 +141,12 @@ export function useTableFilters(prospects: ProspectView[]) {
     setTzOffset,
     showDnc,
     setShowDnc,
+    country,
+    setCountry,
+    tag,
+    setTag,
+    hasEmailOnly,
+    setHasEmailOnly,
     groups,
   };
 }

@@ -43,8 +43,23 @@ create table if not exists public.prospects_seed (
   -- BgTranslation object ({pwdAtRelevance, careerBackground, reputationActivity,
   -- notes}) or null for rows below BG_TRANSLATION_MIN_MATCH_RATING.
   bg_translation               jsonb,
+  -- Derived from `country` at import time (normalizeProspect.normalizeCountry),
+  -- not hand-authored. Null when the raw country text is missing/unclear or
+  -- names more than one country ambiguously (e.g. "Ireland/UK").
+  country_normalized           text,
+  -- Free-form batch/source labels (e.g. which import a prospect came from),
+  -- hand-authored per row in the seed JSON. Empty for pre-existing rows.
+  tags                         text[] not null default '{}'::text[],
   imported_at                  timestamptz not null
 );
+
+-- Migration for an already-created live table: CREATE TABLE IF NOT EXISTS above
+-- does not retroactively add columns to an existing prospects_seed. Both
+-- statements are themselves idempotent/safe to re-run.
+alter table public.prospects_seed
+  add column if not exists country_normalized text;
+alter table public.prospects_seed
+  add column if not exists tags text[] not null default '{}'::text[];
 
 -- ---------------------------------------------------------------------------
 -- prospect_state — the live, shared, mutable review state. The seed importer

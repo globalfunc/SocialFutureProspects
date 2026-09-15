@@ -41,6 +41,8 @@ interface SeedColumns {
   notes: string;
   photo_path: string | null;
   bg_translation: BgTranslation | null;
+  country_normalized: string | null;
+  tags: string[];
   imported_at: string;
 }
 
@@ -67,6 +69,8 @@ function toSeedColumns(row: ProspectSeedRow): SeedColumns {
     notes: row.notes,
     photo_path: row.photoPath,
     bg_translation: row.bgTranslation,
+    country_normalized: row.countryNormalized,
+    tags: row.tags,
     imported_at: row.imported_at,
   };
 }
@@ -94,6 +98,8 @@ function fromSeedColumns(row: SeedColumns): ProspectSeedRow {
     notes: row.notes,
     photoPath: row.photo_path,
     bgTranslation: row.bg_translation,
+    countryNormalized: row.country_normalized,
+    tags: row.tags ?? [],
     imported_at: row.imported_at,
   };
 }

@@ -97,6 +97,22 @@ export function ProspectRow({
           />
         )}
       </td>
+      <td className="border-b border-line px-3 py-2.5 align-top text-[13.5px]">
+        {p.tags.length === 0 ? (
+          <span className="text-ink-soft">{t("table.noTags")}</span>
+        ) : (
+          <span className="flex flex-wrap gap-1">
+            {p.tags.map((tg) => (
+              <span
+                key={tg}
+                className="whitespace-nowrap rounded-sm border border-line bg-paper-raised px-1.5 py-0.5 text-[11.5px] font-medium text-ink-soft"
+              >
+                {tg}
+              </span>
+            ))}
+          </span>
+        )}
+      </td>
     </tr>
   );
 }

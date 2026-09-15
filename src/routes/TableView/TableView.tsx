@@ -4,7 +4,13 @@ import { useProspects } from "../../hooks/useProspects.js";
 import { useAnnounce } from "../../context/AnnounceContext.js";
 import { SortableHeader } from "./SortableHeader.js";
 import { ProspectRow } from "./ProspectRow.js";
-import { useTableFilters, type SortField } from "./useTableFilters.js";
+import {
+  useTableFilters,
+  distinctCountries,
+  distinctTags,
+  UNKNOWN_COUNTRY_VALUE,
+  type SortField,
+} from "./useTableFilters.js";
 
 const COLUMN_LABEL_KEYS: Record<SortField, string> = {
   name: "table.thName",
@@ -27,8 +33,17 @@ export function TableView() {
     setTzOffset,
     showDnc,
     setShowDnc,
+    country,
+    setCountry,
+    tag,
+    setTag,
+    hasEmailOnly,
+    setHasEmailOnly,
     groups,
   } = useTableFilters(prospects);
+
+  const countryOptions = distinctCountries(prospects);
+  const tagOptions = distinctTags(prospects);
 
   const [searchInput, setSearchInput] = useState("");
   useEffect(() => {
@@ -70,6 +85,9 @@ export function TableView() {
     setSearchInput("");
     setSearch("");
     setTzOffset(null);
+    setCountry(null);
+    setTag(null);
+    setHasEmailOnly(false);
   };
 
   if (!loading && prospects.length === 0) {
@@ -128,6 +146,54 @@ export function TableView() {
             </button>
           </div>
         </div>
+        <div className="flex flex-col gap-1.5">
+          <label htmlFor="country-filter" className="text-xs font-semibold text-ink-soft">
+            {t("table.countryFilterLabel")}
+          </label>
+          <select
+            id="country-filter"
+            value={country ?? ""}
+            onChange={(e) => setCountry(e.target.value === "" ? null : e.target.value)}
+            className="rounded-sm border border-line bg-paper-raised px-2.5 py-2 text-sm"
+          >
+            <option value="">{t("table.countryFilterAll")}</option>
+            <option value={UNKNOWN_COUNTRY_VALUE}>{t("table.countryFilterUnknown")}</option>
+            {countryOptions.map((c) => (
+              <option key={c} value={c}>
+                {c}
+              </option>
+            ))}
+          </select>
+        </div>
+        {tagOptions.length > 0 && (
+          <div className="flex flex-col gap-1.5">
+            <label htmlFor="tag-filter" className="text-xs font-semibold text-ink-soft">
+              {t("table.tagFilterLabel")}
+            </label>
+            <select
+              id="tag-filter"
+              value={tag ?? ""}
+              onChange={(e) => setTag(e.target.value === "" ? null : e.target.value)}
+              className="rounded-sm border border-line bg-paper-raised px-2.5 py-2 text-sm"
+            >
+              <option value="">{t("table.tagFilterAll")}</option>
+              {tagOptions.map((tg) => (
+                <option key={tg} value={tg}>
+                  {tg}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+        <label className="flex items-center gap-1.5 pb-2 text-[13px] text-ink-soft">
+          <input
+            type="checkbox"
+            checked={hasEmailOnly}
+            onChange={(e) => setHasEmailOnly(e.target.checked)}
+            className="h-4 w-4"
+          />
+          {t("table.hasEmailLabel")}
+        </label>
         <label className="flex items-center gap-1.5 pb-2 text-[13px] text-ink-soft">
           <input
             type="checkbox"
@@ -180,6 +246,9 @@ export function TableView() {
               <th scope="col" className="px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wide text-ink-soft">
                 {t("table.thOutreach")}
               </th>
+              <th scope="col" className="px-3 py-2.5 text-left text-[11px] font-semibold uppercase tracking-wide text-ink-soft">
+                {t("table.thTags")}
+              </th>
             </tr>
           </thead>
 
@@ -187,7 +256,7 @@ export function TableView() {
             <tbody>
               <tr>
                 <th
-                  colSpan={7}
+                  colSpan={8}
                   scope="colgroup"
                   className="border-b border-t border-line bg-paper-raised px-3 py-2 text-left text-xs font-semibold"
                 >
@@ -213,7 +282,7 @@ export function TableView() {
               <tbody>
                 <tr>
                   <th
-                    colSpan={7}
+                    colSpan={8}
                     scope="colgroup"
                     className="border-b border-t border-line bg-paper-raised px-3 py-2 text-left text-xs font-semibold"
                   >
@@ -243,7 +312,7 @@ export function TableView() {
               <tbody>
                 <tr>
                   <th
-                    colSpan={7}
+                    colSpan={8}
                     scope="colgroup"
                     className="border-b border-t border-line bg-paper-raised px-3 py-2 text-left text-xs font-semibold"
                   >

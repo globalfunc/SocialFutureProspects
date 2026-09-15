@@ -33,18 +33,18 @@ function minimalRow(id: string, overrides: Partial<RawProspectRow> = {}): RawPro
 }
 
 describe("runSeedImport", () => {
-  it("seeds all 50 real rows into prospects_seed and creates matching default prospect_state rows", async () => {
+  it("seeds all 66 real rows into prospects_seed and creates matching default prospect_state rows", async () => {
     const client = new InMemoryStorageClient();
     const result = await runSeedImport(client, rawSeed);
 
-    expect(result.seededCount).toBe(50);
-    expect(result.newStateRowCount).toBe(50);
+    expect(result.seededCount).toBe(66);
+    expect(result.newStateRowCount).toBe(66);
 
     const seedRows = await client.prospectsSeed.getAll();
-    expect(seedRows.length).toBe(50);
+    expect(seedRows.length).toBe(66);
 
     const stateRows = await client.prospectState.getAll();
-    expect(stateRows.length).toBe(50);
+    expect(stateRows.length).toBe(66);
     for (const row of stateRows) {
       expect(row.verified).toBe(false);
       expect(row.favourite).toBe(false);

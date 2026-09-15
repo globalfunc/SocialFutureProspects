@@ -44,6 +44,17 @@ export interface Prospect {
   // Phase 5 content work. Populated only for matchRating >= 4 rows; null otherwise
   // (including at Phase 4 seed-import time, since no translations exist yet).
   bgTranslation: BgTranslation | null;
+  // Derived from `country` at import time (see normalizeCountry) the same way
+  // scrapedEmail is derived from `contact` — never hand-authored per row. Null
+  // when the raw country text is missing/unclear (e.g. "N/A", "Unclear") or
+  // genuinely names more than one country ambiguously — that ambiguity is a
+  // real fact about the source data, not something to silently resolve by
+  // guessing one of the countries.
+  countryNormalized: string | null;
+  // Free-form labels for grouping/filtering prospects by where they came from
+  // (e.g. an import batch). Empty for every pre-existing row; hand-authored in
+  // the raw seed JSON per row, unlike the other derived fields on this type.
+  tags: string[];
 }
 
 // --- Supabase table row shapes (design.md §4) ---

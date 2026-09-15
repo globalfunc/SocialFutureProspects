@@ -25,6 +25,8 @@ function makeProspect(overrides: Partial<Prospect> = {}): Prospect {
     notes: "Notes",
     photoPath: null,
     bgTranslation: null,
+    countryNormalized: "UK",
+    tags: [],
     ...overrides,
   };
 }

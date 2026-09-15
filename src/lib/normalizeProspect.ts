@@ -22,6 +22,10 @@ export interface RawProspectRow {
   careerBackground: string;
   reputationActivity: string;
   notes: string;
+  // Optional: absent on every pre-existing row. Hand-authored per row (unlike
+  // the other Prospect fields derived below), used to group/filter prospects
+  // by where they came from (e.g. an import batch).
+  tags?: string[];
 }
 
 export class InvalidSeedRowError extends Error {
@@ -67,6 +71,22 @@ function extractScrapedEmail(contact: string): string | null {
   return EMAIL_PATTERN.exec(contact)?.[0] ?? null;
 }
 
+const UNKNOWN_COUNTRY_VALUES = new Set(["n/a", "unclear", ""]);
+
+// Derives a clean country name for filtering out of the free-text `country`
+// field (29 distinct raw strings across the current seed, e.g. "USA (Cupertino,
+// CA)", "UK (London)", "N/A", "Ireland/UK (org HQ London)"). Strips a trailing
+// "(city/detail)" qualifier; "N/A"/"Unclear" become null (unknown, never
+// filtered out — same rule as tzDiffHours). A compound like "Ireland/UK" is
+// genuine ambiguity in the source data, not something to resolve by guessing
+// one of the two countries, so it also becomes null rather than picking one.
+function normalizeCountry(raw: string): string | null {
+  const withoutDetail = raw.replace(/\s*\([^)]*\)\s*$/, "").trim();
+  if (UNKNOWN_COUNTRY_VALUES.has(withoutDetail.toLowerCase())) return null;
+  if (withoutDetail.includes("/")) return null;
+  return withoutDetail;
+}
+
 // Converts one raw seed-JSON row into the normalized Prospect shape (design.md §4).
 // Pure function, no I/O — the caller (seedImport) is responsible for persistence.
 export function normalizeProspect(raw: RawProspectRow): Prospect {
@@ -96,6 +116,8 @@ export function normalizeProspect(raw: RawProspectRow): Prospect {
     // Phase 5 content work — no translations exist yet at import time, regardless
     // of matchRating.
     bgTranslation: null,
+    countryNormalized: normalizeCountry(raw.country),
+    tags: raw.tags ?? [],
   };
 }
 

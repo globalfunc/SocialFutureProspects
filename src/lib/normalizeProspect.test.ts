@@ -35,6 +35,40 @@ function makeRow(overrides: Partial<RawProspectRow>): RawProspectRow {
   };
 }
 
+describe("normalizeProspect: countryNormalized", () => {
+  it("passes a plain country name through unchanged", () => {
+    expect(normalizeProspect(makeRow({ country: "Germany" })).countryNormalized).toBe("Germany");
+  });
+
+  it("strips a trailing city/detail qualifier", () => {
+    expect(normalizeProspect(makeRow({ country: "USA (Cupertino, CA)" })).countryNormalized).toBe("USA");
+    expect(normalizeProspect(makeRow({ country: "UK (London)" })).countryNormalized).toBe("UK");
+  });
+
+  it("normalizes N/A and Unclear to null", () => {
+    expect(normalizeProspect(makeRow({ country: "N/A" })).countryNormalized).toBeNull();
+    expect(normalizeProspect(makeRow({ country: "Unclear" })).countryNormalized).toBeNull();
+  });
+
+  it("normalizes a genuinely ambiguous compound country to null rather than guessing one", () => {
+    expect(
+      normalizeProspect(makeRow({ country: "Ireland/UK (org HQ London)" })).countryNormalized,
+    ).toBeNull();
+  });
+});
+
+describe("normalizeProspect: tags", () => {
+  it("defaults to an empty array when the raw row has no tags", () => {
+    expect(normalizeProspect(makeRow({}))).toHaveProperty("tags", []);
+  });
+
+  it("passes given tags through unchanged", () => {
+    expect(normalizeProspect(makeRow({ tags: ["blind-influencers-2026"] })).tags).toEqual([
+      "blind-influencers-2026",
+    ]);
+  });
+});
+
 describe("normalizeProspect: tzDiffHours", () => {
   it("passes numbers through unchanged, including fractional values", () => {
     expect(normalizeProspect(makeRow({ tzDiffHours: -2 })).tzDiffHours).toBe(-2);
@@ -100,27 +134,27 @@ describe("normalizeAllProspects", () => {
 });
 
 describe("against the real seed file", () => {
-  it("has 50 rows, all unique ids", () => {
-    expect(rawSeed.length).toBe(50);
-    expect(new Set(rawSeed.map((r) => r.id)).size).toBe(50);
+  it("has 66 rows, all unique ids", () => {
+    expect(rawSeed.length).toBe(66);
+    expect(new Set(rawSeed.map((r) => r.id)).size).toBe(66);
   });
 
   it("normalizes every row without throwing", () => {
     const prospects = normalizeAllProspects(rawSeed);
-    expect(prospects.length).toBe(50);
+    expect(prospects.length).toBe(66);
   });
 
-  it("matches design.md's documented matchRating distribution", () => {
+  it("matches the current seed's matchRating distribution (original 50 plus the blind-influencers-2026 batch)", () => {
     const prospects = normalizeAllProspects(rawSeed);
     const dist: Record<number, number> = {};
     for (const p of prospects) dist[p.matchRating] = (dist[p.matchRating] ?? 0) + 1;
-    expect(dist).toEqual({ 0: 3, 1: 7, 2: 3, 3: 10, 4: 10, 5: 17 });
+    expect(dist).toEqual({ 0: 3, 1: 7, 2: 3, 3: 10, 4: 17, 5: 26 });
   });
 
-  it("matches design.md's documented unresolved-timezone count (9)", () => {
+  it("matches the current seed's unresolved-timezone count (11)", () => {
     const prospects = normalizeAllProspects(rawSeed);
     const unresolved = prospects.filter((p) => p.tzDiffHours === null);
-    expect(unresolved.length).toBe(9);
+    expect(unresolved.length).toBe(11);
   });
 
   it("keeps the one fractional tzDiffHours value (2.5) as-is", () => {
@@ -128,9 +162,15 @@ describe("against the real seed file", () => {
     expect(prospects.some((p) => p.tzDiffHours === 2.5)).toBe(true);
   });
 
-  it("finds exactly 3 rows with a scrapable email address in the current seed", () => {
+  it("finds exactly 18 rows with a scrapable email address in the current seed", () => {
     const prospects = normalizeAllProspects(rawSeed);
-    expect(prospects.filter((p) => p.scrapedEmail !== null).length).toBe(3);
+    expect(prospects.filter((p) => p.scrapedEmail !== null).length).toBe(18);
+  });
+
+  it("tags every row from the blind-influencers-2026 batch, and no pre-existing row", () => {
+    const prospects = normalizeAllProspects(rawSeed);
+    const tagged = prospects.filter((p) => p.tags.includes("blind-influencers-2026"));
+    expect(tagged.length).toBe(16);
   });
 
   it("includes both split rows for the former joint Masselin/Simon entry", () => {
