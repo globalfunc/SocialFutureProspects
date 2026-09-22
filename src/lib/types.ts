@@ -103,6 +103,13 @@ export interface ProspectStateRow {
   // User-curated list of non-email ways to reach this prospect (personal/company
   // site, LinkedIn, Instagram, Facebook, other). Empty until someone adds one.
   contact_sources: ContactSource[];
+  // Hand-drafted invitation email persisted from public/prospects/<id>/
+  // invitation_email.md's "## Email" section. Null until a draft has been
+  // captured for that prospect — unrelated to src/email/generateEmail.ts's
+  // runtime template fill.
+  drafted_email_subject: string | null;
+  drafted_email_body: string | null;
+  drafted_email_updated_at: string | null; // ISO timestamp
   updated_at: string; // ISO timestamp
 }
 
@@ -113,6 +120,9 @@ export const DEFAULT_PROSPECT_STATE: Omit<ProspectStateRow, "id" | "updated_at">
   outreach_status_set_at: null,
   email: null,
   contact_sources: [],
+  drafted_email_subject: null,
+  drafted_email_body: null,
+  drafted_email_updated_at: null,
 };
 
 // Threshold for BG-translated prospect content, per CLAUDE.md's bilingual-content

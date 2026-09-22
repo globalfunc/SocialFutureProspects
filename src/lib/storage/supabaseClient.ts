@@ -115,6 +115,9 @@ interface StateColumns {
   outreach_status_set_at: string | null;
   email: string | null;
   contact_sources: ContactSource[] | null;
+  drafted_email_subject: string | null;
+  drafted_email_body: string | null;
+  drafted_email_updated_at: string | null;
   updated_at: string;
 }
 
@@ -127,6 +130,9 @@ function fromStateColumns(row: StateColumns): ProspectStateRow {
     outreach_status_set_at: row.outreach_status_set_at,
     email: row.email,
     contact_sources: row.contact_sources ?? [],
+    drafted_email_subject: row.drafted_email_subject,
+    drafted_email_body: row.drafted_email_body,
+    drafted_email_updated_at: row.drafted_email_updated_at,
     updated_at: row.updated_at,
   };
 }
