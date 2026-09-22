@@ -35,6 +35,15 @@ export function Header() {
       </div>
 
       <div className="flex flex-wrap items-center gap-2.5">
+        <Link
+          to="/program-lineup"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="rounded-sm border border-line bg-paper-raised px-3.5 py-2 text-[13px] font-medium hover:border-ink-soft"
+        >
+          {t("programLineup.navLink")}
+        </Link>
+
         <div
           role="group"
           aria-label={t("chrome.languageGroupLabel")}

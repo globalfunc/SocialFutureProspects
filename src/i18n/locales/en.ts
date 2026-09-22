@@ -175,4 +175,18 @@ export const en = {
   footer: {
     text: "Internal review tool for the 29 Sept 2026 conference — not for public distribution.",
   },
+  programLineup: {
+    navLink: "Program lineup",
+    eyebrow: '"Social Future" Foundation (Jamba – Career for All)',
+    title: "Adapting Workplaces for People with Disabilities",
+    dateChip: "29 September 2026",
+    timeChip: "12:00–15:00 EEST · Sofia time",
+    platformChip: "Held on Zoom",
+    lede: 'The "Social Future" Foundation (Jamba – Career for All) is organizing an international online conference to support young people with disabilities in Bulgaria in their career development, education, and employment in the Bulgarian labour market — the third in a series of conferences dedicated to raising public awareness of employment issues facing people with disabilities in Bulgaria.',
+    speakersEyebrow: "Confirmed speakers",
+    speakersTitle: "Running order",
+    tzNote: "All times Sofia / EEST",
+    sofiaLabel: "Sofia",
+    backToIndex: "Back to prospect index",
+  },
 };

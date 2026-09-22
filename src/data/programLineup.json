@@ -1,0 +1,66 @@
+[
+  {
+    "id": "thorkil-sonne",
+    "name": "Thorkil Sonne",
+    "country": "Denmark",
+    "occupation": "Founder, Specialisterne · Chairperson, Square Foundation",
+    "timeSofia": "1:00 PM",
+    "topicTitle": "Different and Together: The Neurodiversity Journey",
+    "topicSubtitle": "The speaker will share his story and learnings as founder of the neurodiversity employment movement. You will be inspired to take action allowing everyone to belong in the workplace.",
+    "bg": {
+      "country": "Дания",
+      "occupation": "Основател, Specialisterne · Председател, Square Foundation",
+      "time": "13:00 ч.",
+      "topicTitle": "Различни, но заедно: Пътят на неврологичното разнообразие",
+      "topicSubtitle": "Лекторят ще сподели своята история и поуки като основател на движението за трудова заетост на хора с неврологично разнообразие. Ще бъдете вдъхновени да действате така, че всеки да намери своето място на работното място."
+    }
+  },
+  {
+    "id": "dirk-m-ller-remus",
+    "name": "Dirk Müller-Remus",
+    "country": "Germany",
+    "occupation": "Founder, auticon",
+    "timeSofia": "1:30 PM",
+    "topicTitle": "The auticon story",
+    "topicSubtitle": "A profit-oriented social enterprise for neurodivergent people.",
+    "bg": {
+      "country": "Германия",
+      "occupation": "Основател, auticon",
+      "time": "13:30 ч.",
+      "topicTitle": "Историята на auticon",
+      "topicSubtitle": "Печелившо социално предприятие за хора с неврологично разнообразие."
+    }
+  },
+  {
+    "id": "esi-hardy",
+    "name": "Esi Hardy",
+    "country": "United Kingdom",
+    "occupation": "Founder & Managing Director, Celebrating Disability",
+    "timeSofia": "2:00 PM",
+    "topicTitle": "Celebrating Disability and how businesses can partner to deliver real disability inclusion",
+    "topicSubtitle": null,
+    "bg": {
+      "country": "Обединено кралство",
+      "occupation": "Основател и управляващ директор, Celebrating Disability",
+      "time": "14:00 ч.",
+      "topicTitle": "Celebrating Disability и как бизнесът може да партнира за постигане на реално приобщаване на хората с увреждания",
+      "topicSubtitle": null
+    }
+  },
+  {
+    "id": "seema-flower",
+    "name": "Seema Flower",
+    "country": "United Kingdom",
+    "occupation": "Founder & Managing Director, Blind Ambition",
+    "timeSofia": "2:30 PM",
+    "topicTitle": "Closing the Gap: Connecting Employers to Blind and Partially Sighted Talent in the UK",
+    "topicSubtitle": "How Blind Ambition trains UK organisations to become disability-confident, and its new recruitment platform matching blind and partially sighted jobseekers with employers.",
+    "bg": {
+      "country": "Обединено кралство",
+      "occupation": "Основател и управляващ директор, Blind Ambition",
+      "time": "14:30 ч.",
+      "topicTitle": "Преодоляване на разликата: Свързване на работодатели със слепи и слабовиждащи таланти в Обединеното кралство",
+      "topicSubtitle": "Как Blind Ambition обучава организации в Обединеното кралство да станат уверени в работата с хора с увреждания, и новата платформа за подбор на персонал, свързваща слепи и слабовиждащи кандидати с работодатели."
+    }
+  }
+]

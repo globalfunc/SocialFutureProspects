@@ -1,6 +1,9 @@
 import { useState } from "react";
 
-function initials(name: string): string {
+// Exported for reuse by other photo-with-fallback components (e.g. the
+// Program Lineup page) that need the same public/prospects/<id>/photo.<ext>
+// convention with a different visual frame.
+export function initials(name: string): string {
   const parts = name
     .replace(/[^\p{L}\s]/gu, "")
     .trim()
@@ -12,7 +15,7 @@ function initials(name: string): string {
 // no build step: dropping a file in with one of these names is enough. Each
 // candidate is a straight guess (no directory listing on GitHub Pages), so a
 // missing file is a normal 404 the <img>'s onError silently advances past.
-const PHOTO_EXTENSIONS = ["jpg", "png", "webp"];
+export const PHOTO_EXTENSIONS = ["jpg", "png", "webp"];
 
 // Photo-absent is the normal state right now (design.md §2), not an error —
 // a fixed-size box with initials, decorative (aria-hidden), since the
