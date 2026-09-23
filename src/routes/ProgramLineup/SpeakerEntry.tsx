@@ -13,6 +13,7 @@ export function SpeakerEntry({ speaker, lang }: { speaker: Speaker; lang: AppLan
   const [extensionIndex, setExtensionIndex] = useState(0);
 
   const isBg = lang === "bg";
+  const name = isBg ? (speaker.bg.name ?? speaker.name) : speaker.name;
   const country = isBg ? speaker.bg.country : speaker.country;
   const countryShort = isBg ? country : (COUNTRY_SHORT_EN[country] ?? country);
   const occupation = isBg ? speaker.bg.occupation : speaker.occupation;
@@ -45,7 +46,7 @@ export function SpeakerEntry({ speaker, lang }: { speaker: Speaker; lang: AppLan
             />
           ) : (
             <div className="pl-photo-fallback" aria-hidden="true">
-              <span>{initials(speaker.name)}</span>
+              <span>{initials(name)}</span>
             </div>
           )}
         </div>
@@ -53,7 +54,7 @@ export function SpeakerEntry({ speaker, lang }: { speaker: Speaker; lang: AppLan
 
       <div className="pl-body-col">
         <div className="pl-name-row">
-          <h3 className="pl-speaker-name">{speaker.name}</h3>
+          <h3 className="pl-speaker-name">{name}</h3>
           <span className="pl-speaker-country">{country}</span>
         </div>
         <p className="pl-speaker-occupation">{occupation}</p>

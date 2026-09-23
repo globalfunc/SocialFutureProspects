@@ -7,6 +7,9 @@
 import speakersJson from "../../data/programLineup.json";
 
 export interface SpeakerBg {
+  // Only set when the speaker's own name has a standard Cyrillic spelling
+  // (Bulgarian speakers); foreign names stay in Latin script even in BG copy.
+  name?: string;
   country: string;
   occupation: string;
   time: string;
