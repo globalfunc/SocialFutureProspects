@@ -189,7 +189,6 @@ export const en = {
     speakersEyebrow: "Confirmed speakers",
     speakersTitle: "Running order",
     tzNote: "All times Sofia / EEST",
-    sofiaLabel: "Sofia",
     backToIndex: "Back to prospect index",
   },
 };

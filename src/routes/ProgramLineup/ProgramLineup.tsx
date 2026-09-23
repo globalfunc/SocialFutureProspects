@@ -1,8 +1,9 @@
 import { useTranslation } from "react-i18next";
 import { Link } from "react-router-dom";
 import { setAppLanguage, type AppLanguage } from "../../i18n/index.js";
-import { speakers } from "./speakers.js";
+import { isBreak, speakers } from "./speakers.js";
 import { SpeakerEntry } from "./SpeakerEntry.js";
+import { BreakEntry } from "./BreakEntry.js";
 import "./ProgramLineup.css";
 
 // Standalone public programme page (design approved 2026-09-22) — deliberately
@@ -63,9 +64,13 @@ export function ProgramLineup() {
           </div>
 
           <ol className="pl-lineup">
-            {speakers.map((speaker) => (
-              <SpeakerEntry key={speaker.id} speaker={speaker} lang={lang} />
-            ))}
+            {speakers.map((item) =>
+              isBreak(item) ? (
+                <BreakEntry key={item.id} item={item} lang={lang} />
+              ) : (
+                <SpeakerEntry key={item.id} speaker={item} lang={lang} />
+              ),
+            )}
           </ol>
         </section>
 

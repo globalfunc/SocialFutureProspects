@@ -1,15 +1,20 @@
 import { useState } from "react";
-import { useTranslation } from "react-i18next";
 import { initials, PHOTO_EXTENSIONS } from "../../components/InitialsAvatar.js";
 import type { AppLanguage } from "../../i18n/index.js";
 import type { Speaker } from "./speakers.js";
 
+// Short form for the country label under the time slot — kept distinct from
+// the full country name shown next to the speaker's name (pl-speaker-country).
+const COUNTRY_SHORT_EN: Record<string, string> = {
+  "United Kingdom": "UK",
+};
+
 export function SpeakerEntry({ speaker, lang }: { speaker: Speaker; lang: AppLanguage }) {
-  const { t } = useTranslation();
   const [extensionIndex, setExtensionIndex] = useState(0);
 
   const isBg = lang === "bg";
   const country = isBg ? speaker.bg.country : speaker.country;
+  const countryShort = isBg ? country : (COUNTRY_SHORT_EN[country] ?? country);
   const occupation = isBg ? speaker.bg.occupation : speaker.occupation;
   const time = isBg ? speaker.bg.time : speaker.timeSofia;
   const topicTitle = isBg ? speaker.bg.topicTitle : speaker.topicTitle;
@@ -22,12 +27,12 @@ export function SpeakerEntry({ speaker, lang }: { speaker: Speaker; lang: AppLan
       <div className="pl-time-col">
         <span className="pl-time-node" aria-hidden="true"></span>
         <div className="pl-time-big">{time}</div>
-        <div className="pl-time-zone">{t("programLineup.sofiaLabel")}</div>
+        <div className="pl-time-zone">{countryShort}</div>
       </div>
 
       <div className="pl-photo-col">
         <div className="pl-mobile-time">
-          {time} &middot; {t("programLineup.sofiaLabel")}
+          {time} &middot; {countryShort}
         </div>
         <div className="pl-photo-frame">
           {hasPhoto ? (

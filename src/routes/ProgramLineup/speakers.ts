@@ -25,4 +25,23 @@ export interface Speaker {
   bg: SpeakerBg;
 }
 
-export const speakers = speakersJson as Speaker[];
+// A schedule gap (e.g. a break) rather than a person — kept out of the
+// Speaker shape so break rows never need a fake country/occupation/photo.
+export interface ScheduleBreak {
+  id: string;
+  isBreak: true;
+  timeSofia: string;
+  label: string;
+  bg: {
+    time: string;
+    label: string;
+  };
+}
+
+export type ProgramItem = Speaker | ScheduleBreak;
+
+export function isBreak(item: ProgramItem): item is ScheduleBreak {
+  return "isBreak" in item && item.isBreak === true;
+}
+
+export const speakers = speakersJson as ProgramItem[];

@@ -179,7 +179,7 @@
 .pl-lineup::before {
   content: "";
   position: absolute;
-  left: 74px;
+  left: 100px;
   top: 10px;
   bottom: 10px;
   width: 2px;
@@ -194,7 +194,7 @@
 
 .pl-speaker {
   display: grid;
-  grid-template-columns: 74px 96px 1fr;
+  grid-template-columns: 100px 96px 1fr;
   column-gap: 22px;
   padding-block: 28px;
   position: relative;
@@ -204,10 +204,32 @@
   border-top: 1px solid var(--pl-line);
 }
 
+.pl-speaker--break {
+  padding-block: 14px;
+  align-items: center;
+}
+
+.pl-break-label {
+  grid-column: 2 / -1;
+  align-self: center;
+  font-family: "IBM Plex Mono", ui-monospace, monospace;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--pl-ink-soft);
+}
+
 @media (max-width: 640px) {
   .pl-speaker {
     grid-template-columns: 26px 1fr;
     row-gap: 14px;
+  }
+  .pl-speaker--break {
+    row-gap: 0;
+  }
+  .pl-break-label {
+    grid-column: 2;
   }
   .pl-speaker .pl-photo-col {
     grid-column: 2;
@@ -226,7 +248,7 @@
 
 .pl-time-node {
   position: absolute;
-  left: 74px;
+  left: 100px;
   top: 50%;
   transform: translate(-50%, -50%);
   width: 13px;

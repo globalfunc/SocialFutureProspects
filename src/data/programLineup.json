@@ -1,5 +1,53 @@
 [
   {
+    "id": "kris-grigorov",
+    "name": "Kris Grigorov",
+    "country": "Bulgaria",
+    "occupation": "Project Activities Lead, Social Future Foundation",
+    "timeSofia": "12:00 PM",
+    "topicTitle": "Opening Speech",
+    "topicSubtitle": "A blind journalist, musician, and blogger with over 10 years of experience in the media and social sectors.",
+    "bg": {
+      "country": "България",
+      "occupation": "Ръководител „Дейности по проекта“, Фондация „Сошъл Фючър“",
+      "time": "12:00 ч.",
+      "topicTitle": "Откриващо слово",
+      "topicSubtitle": "Незрящ журналист, музикант и блогър с над 10 години опит в медийния и социалния сектор."
+    }
+  },
+  {
+    "id": "plamen-veselinov",
+    "name": "Plamen Veselinov",
+    "country": "Bulgaria",
+    "occupation": "Founder, Tenebris",
+    "timeSofia": "12:10 PM",
+    "topicTitle": "Business in the Dark: Social Entrepreneurship as a Working Model",
+    "topicSubtitle": "Plamen is an entrepreneur and the person behind the first restaurant in the dark in Southeast Europe, turning blind people into part of the sighted guests' experience while giving them employment. He will speak about the experience of being in the dark with blind people, and about how social entrepreneurship can be a successful business model.",
+    "bg": {
+      "country": "България",
+      "occupation": "Основател, Tenebris",
+      "time": "12:10 ч.",
+      "topicTitle": "Бизнес на тъмно: Социалното предприемачество като успешен бизнес модел",
+      "topicSubtitle": "Пламен е предприемач и човекът зад първия ресторант на тъмно в Югоизточна Европа. Той превръща незрящи хора в част от преживяването на зрящите в тъмното, като същевременно им дава работа. Той ще говори за преживяването да се озовеш на тъмно с незрящи и ще говори как социалното предприемачество може да бъде успешен бизнес модел."
+    }
+  },
+  {
+    "id": "esi-hardy",
+    "name": "Esi Hardy",
+    "country": "United Kingdom",
+    "occupation": "Founder & Managing Director, Celebrating Disability",
+    "timeSofia": "12:35 PM",
+    "topicTitle": "Celebrating Disability and how businesses can partner to deliver real disability inclusion",
+    "topicSubtitle": null,
+    "bg": {
+      "country": "Обединено кралство",
+      "occupation": "Основател и управляващ директор, Celebrating Disability",
+      "time": "12:35 ч.",
+      "topicTitle": "Celebrating Disability и как бизнесът може да партнира за постигане на реално приобщаване на хората с увреждания",
+      "topicSubtitle": null
+    }
+  },
+  {
     "id": "thorkil-sonne",
     "name": "Thorkil Sonne",
     "country": "Denmark",
@@ -16,35 +64,45 @@
     }
   },
   {
+    "id": "break-1",
+    "isBreak": true,
+    "timeSofia": "1:25 PM",
+    "label": "10 Minute Break",
+    "bg": {
+      "time": "13:25 ч.",
+      "label": "10-минутна почивка"
+    }
+  },
+  {
     "id": "dirk-m-ller-remus",
     "name": "Dirk Müller-Remus",
     "country": "Germany",
     "occupation": "Founder, auticon",
-    "timeSofia": "1:30 PM",
+    "timeSofia": "1:35 PM",
     "topicTitle": "The auticon story",
     "topicSubtitle": "A profit-oriented social enterprise for neurodivergent people.",
     "bg": {
       "country": "Германия",
       "occupation": "Основател, auticon",
-      "time": "13:30 ч.",
+      "time": "13:35 ч.",
       "topicTitle": "Историята на auticon",
       "topicSubtitle": "Печелившо социално предприятие за хора с неврологично разнообразие."
     }
   },
   {
-    "id": "esi-hardy",
-    "name": "Esi Hardy",
-    "country": "United Kingdom",
-    "occupation": "Founder & Managing Director, Celebrating Disability",
+    "id": "belizar-marinov",
+    "name": "Belizar Marinov",
+    "country": "Bulgaria",
+    "occupation": "Partner, Eleven Ventures",
     "timeSofia": "2:00 PM",
-    "topicTitle": "Celebrating Disability and how businesses can partner to deliver real disability inclusion",
-    "topicSubtitle": null,
+    "topicTitle": "Starting a Business Beyond Physical Barriers",
+    "topicSubtitle": "Belizar is a partner at Eleven Ventures, one of the leading venture capital funds in the region, investing in technology startups. Belizar, who has a visual impairment and is a mentor, will talk about starting a new business while overcoming physical barriers, and about a vision of success rooted mainly in strategic planning and the personal motivation to succeed.",
     "bg": {
-      "country": "Обединено кралство",
-      "occupation": "Основател и управляващ директор, Celebrating Disability",
+      "country": "България",
+      "occupation": "Партньор, Eleven Ventures",
       "time": "14:00 ч.",
-      "topicTitle": "Celebrating Disability и как бизнесът може да партнира за постигане на реално приобщаване на хората с увреждания",
-      "topicSubtitle": null
+      "topicTitle": "Стартиране на бизнес отвъд физическите бариери",
+      "topicSubtitle": "Той е партньор и управляващ мениджър в Eleven Ventures. Това е един от водещите фондове за рисков капитал за региона. Те инвестират в технологични стартъпи. Белизар, който има зрително затруднение и е ментор, ще разкаже как се стартира нов бизнес, преодолявайки физическите бариери, и ще говори за визията на успеха, която е най-вече в стратегическото планиране и личната мотивация да успяваш."
     }
   },
   {

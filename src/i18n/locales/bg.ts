@@ -190,7 +190,6 @@ export const bg = {
     speakersEyebrow: "Потвърдени лектори",
     speakersTitle: "Програма на събитието",
     tzNote: "Всички часове са по София / EEST",
-    sofiaLabel: "София",
     backToIndex: "Обратно към списъка с кандидати",
   },
 };
