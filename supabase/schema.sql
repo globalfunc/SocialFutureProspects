@@ -90,8 +90,19 @@ create table if not exists public.prospect_state (
   -- ContactSource[]: [{ id, type, url }], type one of personal-website |
   -- company-website | linkedin | instagram | facebook | other.
   contact_sources         jsonb not null default '[]'::jsonb,
+  -- Hand-drafted invitation email persisted from public/prospects/<id>/
+  -- invitation_email.md's "## Email" section. Null until a draft has been
+  -- captured for that prospect — unrelated to src/email/generateEmail.ts's
+  -- runtime template fill.
+  drafted_email_subject   text,
+  drafted_email_body      text,
+  drafted_email_updated_at timestamptz,
   updated_at              timestamptz not null default now()
 );
+
+-- Schema changes against an already-created live table go in
+-- supabase/migrations/ as separate, individually-runnable files (not inlined
+-- here) — this file is the full bootstrap snapshot for a fresh project.
 
 -- The table view is sorted by match rating in the UI's default ordering.
 create index if not exists prospects_seed_match_rating_idx

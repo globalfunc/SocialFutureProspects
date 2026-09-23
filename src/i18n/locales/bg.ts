@@ -30,10 +30,10 @@ export const bg = {
     languageGroupLabel: "Език на интерфейса",
     english: "English",
     bulgarian: "Български",
-    unlockBtn: "Отключи редактиране",
+    unlockBtn: "Отключи преглед и редакция",
     lockBtn: "Заключи",
-    lockedStatus: "Заключено — само преглед",
-    unlockedStatus: "Редактирането е отключено",
+    lockedStatus: "Заключено — прегледът е скрит",
+    unlockedStatus: "Прегледът и редактирането са отключени",
     passphraseLabel: "Парола",
     passphraseSubmit: "Отключи",
     incorrectPassphrase: "Грешна парола.",
@@ -55,6 +55,9 @@ export const bg = {
     tagFilterAll: "Всички етикети",
     thTags: "Етикети",
     noTags: "—",
+    lockedTitle: "Отключете, за да видите списъка с кандидати",
+    lockedBody:
+      "Списъкът с кандидати е скрит, докато не отключите достъп за преглед и редакция с общата парола.",
     resultCount: "Показани са {{count}} от {{total}} кандидати",
     caption:
       "Кандидати за лектори — сортируеми по име, оценка на съответствие, държава, часова разлика и длъжност.",

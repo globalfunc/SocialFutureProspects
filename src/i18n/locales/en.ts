@@ -31,10 +31,10 @@ export const en = {
     languageGroupLabel: "Interface language",
     english: "English",
     bulgarian: "Български",
-    unlockBtn: "Unlock editing",
+    unlockBtn: "Unlock preview & edit",
     lockBtn: "Lock",
-    lockedStatus: "Locked — read only",
-    unlockedStatus: "Editing unlocked",
+    lockedStatus: "Locked — preview hidden",
+    unlockedStatus: "Preview & editing unlocked",
     passphraseLabel: "Passphrase",
     passphraseSubmit: "Unlock",
     incorrectPassphrase: "Incorrect passphrase.",
@@ -56,6 +56,9 @@ export const en = {
     tagFilterAll: "All tags",
     thTags: "Tags",
     noTags: "—",
+    lockedTitle: "Unlock to preview the prospect list",
+    lockedBody:
+      "The prospect list is hidden until you unlock preview & edit access with the shared passphrase.",
     resultCount: "Showing {{count}} of {{total}} prospects",
     caption:
       "Speaker prospects — sortable by name, match rating, country, timezone offset and occupation.",
