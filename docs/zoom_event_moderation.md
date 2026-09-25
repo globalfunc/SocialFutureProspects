@@ -190,7 +190,7 @@ Layered on top of the standard speaker segment above:
 
 **Opening announcement (read verbatim, before the first speaker):**
 
-> "Welcome, and thank you for joining us. A few quick notes before we begin. This session has live interpretation between Bulgarian and English — select your channel from the Interpretation icon in your Zoom controls. We also have a sign-language interpreter available throughout; you can pin their video independently of anything else on screen. If you'd like to ask a question, you can raise your hand using Alt+Y on Windows or Option+Y on Mac, or simply type your question into the Q&A panel at any time — we'll read every question aloud. If anything about the technical setup isn't working for you, please say so in the Q&A panel and we'll address it live."
+> "Welcome, and thank you for joining us. A few quick notes before we begin. This session has live interpretation between Bulgarian and English — select your channel from the Interpretation icon in your Zoom controls. We also have a sign-language interpreter available throughout: click that same Interpretation icon and choose the sign-language option to open their video — once open, you can freely resize and reposition it anywhere on your screen, including on top of the slides. If you'd like to ask a question, you can raise your hand using Alt+Y on Windows or Option+Y on Mac, or simply type your question into the Q&A panel at any time — we'll read every question aloud. If anything about the technical setup isn't working for you, please say so in the Q&A panel and we'll address it live."
 
 **Standard handoff line (adapt the teaser per speaker):**
 
@@ -199,6 +199,13 @@ Layered on top of the standard speaker segment above:
 **If a technical failure happens (any of `zoom_setup.md` §9):**
 
 > "We're having a brief technical issue with [what specifically — audio / interpretation / video]. We're working on it now and will be back in just a moment." — say this **immediately**, don't wait to see if it resolves itself first. Per `zoom_setup.md` §9.5, silence is the one thing not to do.
+
+### 7a. Audience viewing instructions — what to put in the pre-event note
+
+- **Slides need no action** — the shared screen is automatically the dominant view for everyone; there's no "pin the presentation," since a screen share isn't a video tile.
+- **To keep seeing the speaker alongside the slides**, pin the speaker's own video (not the slide operator's — nobody needs to watch whoever's just advancing slides). Side-by-side mode (adjustable split via the divider) is the reliable, well-documented way to do this. A fullscreen-share-with-floating-video overlay also exists in Zoom, but its exact steps vary enough by client/version that the moderation team should verify and note the precise click-path during the dry run rather than this doc guessing at it.
+- **Sign-language interpretation is opt-in, not automatic** — once the host activates it, attendees get an in-meeting alert and must click the Interpretation icon and choose the sign-language option themselves before the floating interpreter window appears. Once open, it's independent of everything else on screen (including a fullscreen share) and each attendee resizes/repositions it to their own preference.
+- **Blind attendees need none of the above.** Pinning, resizing, and fullscreen are all purely visual and have zero effect on audio or on anything a screen reader announces — there's nothing for them to act on. The sign interpreter is a separate accommodation for Deaf/hard-of-hearing attendees, not blind ones. A blind attendee's only real actions are selecting their audio interpretation channel and navigating Q&A/chat via screen reader (`zoom_setup.md` §6.5) — and since a shared screen is a rendered visual stream no screen reader can read regardless of layout, the actual accessibility fix for slide content is procedural, not a Zoom setting: **speakers verbally describing what's on each slide** (`zoom_setup.md` §6.1.4), which the pre-event speaker note should already be requiring.
 
 ---
 
@@ -242,4 +249,7 @@ Full detail in `zoom_setup.md` §9 and `zoom_technical_setup.md` §8 (fallback e
 - [Zoom push-to-talk — hold Spacebar to temporarily unmute](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0063245)
 - [Zoom pre-assigned interpreters do not auto-activate in Meetings (Webinar-only automation) — Zoom Community](https://community.zoom.com/t5/Zoom-Meetings/Pre-assigned-interpreters-in-a-meeting/m-p/219253)
 - [Zoom Alternative Host requires same-account licensed user — Zoom Support](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0067027)
+- [Sign Language Interpretation window floats independently, including over fullscreen screen shares](https://www.washington.edu/accesscomputing/resources/accesscomputing-news-december-2022/zoom-announces-new-features-support-sign-language)
+- [Viewing sign language interpretation is opt-in per attendee via the Interpretation icon — Zoom Support](https://support.zoom.com/hc/en/article?id=zm_kb&sysparm_article=KB0066357)
+- [Side-by-side mode and video layout options during screen share](https://itsupport.ou.edu/TDClient/30/Unified/KB/ArticleDet?ID=3149)
 - Also see all sources already listed at the bottom of [`zoom_setup.md`](./zoom_setup.md) and [`zoom_technical_setup.md`](./zoom_technical_setup.md), which this document assumes and builds on.
